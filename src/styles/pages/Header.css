@@ -1,0 +1,16 @@
+.header-app {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    gap: 10px;
+    background-color: #0d062e;
+}
+.header-app-icon {
+    background-color: #120744;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px 0 rgba(37, 0, 204, 0.5);
+}
