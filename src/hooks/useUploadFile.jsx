@@ -1,12 +1,9 @@
-import { useState, useRef, useEffect } from "react"
+import { useRef, useEffect } from "react"
+import { useFileContext } from "./useFileContext.js"
 
-function handleFiles(file) {
-    if (file === null) return
-    console.log('File recivied:', file)
-}
 
 export function useUploadFile() {
-    const [uploadedFile, setUploadedFile] = useState(null)
+    const { uploadedFile, setUploadedFile, handleFiles } = useFileContext()
     const inputfileRef = useRef()
     const uploadfileContainerRef = useRef()
 
@@ -15,7 +12,7 @@ export function useUploadFile() {
 
     const handleChangeUploadFile = () => { 
         setUploadedFile(inputfileRef.current.files[0])
-        handleFiles(uploadedFile) 
+        handleFiles(inputfileRef.current.files[0]) 
     }
 
     useEffect(() => {
@@ -37,10 +34,10 @@ export function useUploadFile() {
             e.preventDefault();
             container.classList.remove('dragover')
             setUploadedFile(e.dataTransfer.files[0])
-            // handleFiles(uploadedFile);
+            handleFiles(e.dataTransfer.files[0]);
         };
 
-        if (uploadedFile !== null) handleFiles(uploadedFile)
+        // if (uploadedFile !== null) handleFiles(uploadedFile)
 
         container.addEventListener('dragover', handleDragOver);
         container.addEventListener('dragleave', handleDragLeave);

@@ -54,6 +54,7 @@
 }
 .initial-actions a {
     border-radius: 14px;
+    text-decoration: none;
 }
 .initial-actions a.active {
     background-color: #3211d4;

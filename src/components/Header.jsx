@@ -1,6 +1,5 @@
-import '../styles/pages/Header.css'
+import '../styles/components/Header.css'
 import { PadlockIcon } from "./Icons.jsx"
-import { InitApp } from './InitApp.jsx'
 export function Header() {
     return (
         <header className="header-app">
