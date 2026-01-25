@@ -41,6 +41,23 @@ export function FileProvider({ children }) {
         URL.revokeObjectURL(url)
     }
 
+    const handleClickDownloadFileEncoded = () => {
+        // Crear un blob con el contenido
+        const blob = new Blob([contentEncode], { type: 'text/plain;charset=utf-8' })
+
+        // Crear un enlace temporal
+        const anchor = document.createElement('a')
+        anchor.href = URL.createObjectURL(blob)
+        anchor.download = uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.'))
+
+        anchor.click()
+
+        // Limpiar
+        URL.revokeObjectURL(anchor.href)
+    }
+
+    const handleClickCopyContent = () => { navigator.clipboard.writeText(contentEncode) }
+
 
     return (
         <FileContext.Provider value={{
@@ -48,7 +65,9 @@ export function FileProvider({ children }) {
             setUploadedFile,
             handleFiles,
             contentEncode,
-            handleClickDownloadFile
+            handleClickCopyContent,
+            handleClickDownloadFile,
+            handleClickDownloadFileEncoded
         }}>
             {children}
         </FileContext.Provider>

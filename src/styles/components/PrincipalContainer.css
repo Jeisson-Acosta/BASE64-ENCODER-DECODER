@@ -10,6 +10,68 @@
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0px 0px 2px 2px #251c4f;
+    gap: 12px;
+}
+.buttons_options {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.buttons_options button {
+    cursor: pointer;
+    border: 1px solid #393353;
+    outline: none;
+    min-width: 160px;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: transparent;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+.buttons_options .active_option {
+    background: #6655be;
+}
+.container-text-to-encoder {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+.container-text-to-encoder textarea {
+    width: 100%;
+    resize: none;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background-color: #131022;
+    color: #fff;
+    min-height: 220px;
+}
+.container-text-to-encoder button {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    min-width: 120px;
+    font-size: 16px;
+    background-color: #0d062e;
+    color: #fff;
+    transition: all .25s ease;
+}
+.container-text-to-encoder button:hover {
+    scale: 1.1;
+    background-color: #403085;
 }
 .uploaded-file {
     border: 2px dashed #282248;

@@ -52,6 +52,7 @@
     gap: 8px;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 .container-right button {
     cursor: pointer;

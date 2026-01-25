@@ -5,7 +5,7 @@ import { CircleRedIcon, CircleYellowIcon, CircleGreenIcon, CopyIcon, DownloadIco
 import { useFileContext } from '../hooks/useFileContext.js'
 
 export function Encoder() {
-  const { uploadedFile, handleClickDownloadFile, contentEncode } = useFileContext()
+  const { uploadedFile, handleClickCopyContent, handleClickDownloadFile, handleClickDownloadFileEncoded, contentEncode } = useFileContext()
 
   return (
     <PrincipalContainer>
@@ -32,15 +32,15 @@ export function Encoder() {
                 <CircleGreenIcon />
               </div>
               <div className="name-file-output">
-                base64_output.txt
+                {uploadedFile && uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')) + '.txt'}
               </div>
             </div>
             <div className="container-right">
-              <button className="copy-btn">
+              <button className="copy-btn" onClick={handleClickCopyContent}>
                 <CopyIcon />
                 COPY
               </button>
-              <button className="download-btn" onClick={() => handleClickDownloadFile({ nameFile: 'text', fileType: 'application/pdf' })}>
+              <button className="download-btn" onClick={handleClickDownloadFileEncoded}>
                 <DownloadIcon />
                 DOWNLOAD
               </button>
@@ -50,7 +50,7 @@ export function Encoder() {
             {contentEncode}
           </div>
           <footer className="footer-output">
-            245 chars
+            {contentEncode.length} chars
           </footer>
         </section>
       </section>
