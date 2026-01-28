@@ -58,7 +58,6 @@ export function FileProvider({ children }) {
 
     const handleClickCopyContent = () => { navigator.clipboard.writeText(contentEncode) }
 
-
     return (
         <FileContext.Provider value={{
             uploadedFile, 

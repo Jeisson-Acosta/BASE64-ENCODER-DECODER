@@ -1,38 +1,36 @@
 import '../styles/components/PrincipalContainer.css'
 import { UploadFileIcon, TextIcon, FileIcon } from './Icons.jsx'
 import { useUploadFile } from '../hooks/useUploadFile.jsx'
-import { useState } from 'react'
+import { useTypeCodification } from '../hooks/useTypeCodification.js'
+import { useTextEncoder } from '../hooks/useTextEncoder.js'
 
 export function PrincipalContainer({ children }) {
 
     const { uploadedFile, inputfileRef, uploadfileContainerRef, handleClickBrowseFile, handleChangeUploadFile } = useUploadFile()
-    const [typeFileToUpload, setTypeFileToUpload] = useState('text') // Text, File
-    const [textoToEncoder, setTextToEncoder] = useState('')
+    const { typeOfCodification, handleClickChangeTypeOfCodification } = useTypeCodification()
+    const { setTextToEncoder, textEncoded, handleClickEncodeText } = useTextEncoder()
 
-    const handleClickEncodeText = () => {
-        if (!textoToEncoder) return
-        alert('hola')
-    }
+    console.log(textEncoded)
 
     return (
         <section className="principal-container">
             <div className="buttons_options">
                 <button 
-                    className={'btn_option' + (typeFileToUpload === 'text' ? ' active_option' : '')} 
-                    onClick={() => setTypeFileToUpload('text')}
+                    className={'btn_option' + (typeOfCodification === 'text' ? ' active_option' : '')} 
+                    onClick={() => handleClickChangeTypeOfCodification('text')}
                 >
                     <TextIcon />
                     TEXT
                 </button>
                 <button 
-                    className={'btn_option' + (typeFileToUpload === 'file' ? ' active_option' : '')}  
-                    onClick={() => setTypeFileToUpload('file')}
+                    className={'btn_option' + (typeOfCodification === 'file' ? ' active_option' : '')}  
+                    onClick={() => handleClickChangeTypeOfCodification('file')}
                 >
                     <FileIcon />
                     FILE
                 </button>
             </div>
-            {uploadedFile === null && typeFileToUpload === 'file' ? (
+            {uploadedFile === null && typeOfCodification === 'file' ? (
                 <section className="uploaded-file" ref={uploadfileContainerRef}>
                     <div className="info">
                         <div className="icon-upload">
@@ -48,7 +46,7 @@ export function PrincipalContainer({ children }) {
                         </button>
                     </div>
                 </section>
-            ) : uploadedFile === null && typeFileToUpload === 'text' ? (
+            ) : typeOfCodification === 'text' && textEncoded === '' ? (
                 <section className="container-text-to-encoder">
                     <textarea
                         autoFocus
