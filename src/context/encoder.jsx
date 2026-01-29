@@ -1,10 +1,18 @@
 import { createContext, useState } from "react";
+import { useTypeCodification } from "../hooks/useTypeCodification.js";
 
-export const FileContext = createContext()
+export const EncoderContext = createContext()
 
-export function FileProvider({ children }) {
+export function EncoderProvider({ children }) {
     const [uploadedFile, setUploadedFile] = useState(null)
+    // const [textoToEncoder, setTextToEncoder] = useState('')
     const [contentEncode, setContentEncode] = useState('')
+    const { typeOfCodification } = useTypeCodification()
+
+    const handleClickEncodeText = (text) => {
+        if (!text) return
+        setContentEncode(btoa(text))
+    }
 
     const handleFiles = (file) => {
         if (!file) return;
@@ -45,10 +53,12 @@ export function FileProvider({ children }) {
         // Crear un blob con el contenido
         const blob = new Blob([contentEncode], { type: 'text/plain;charset=utf-8' })
 
+        const nameFile = typeOfCodification === 'file' ? uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')) : 'output_base64.txt'
+
         // Crear un enlace temporal
         const anchor = document.createElement('a')
         anchor.href = URL.createObjectURL(blob)
-        anchor.download = uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.'))
+        anchor.download = nameFile
 
         anchor.click()
 
@@ -59,16 +69,18 @@ export function FileProvider({ children }) {
     const handleClickCopyContent = () => { navigator.clipboard.writeText(contentEncode) }
 
     return (
-        <FileContext.Provider value={{
+        <EncoderContext.Provider value={{
             uploadedFile, 
             setUploadedFile,
             handleFiles,
+            setContentEncode,
             contentEncode,
             handleClickCopyContent,
             handleClickDownloadFile,
-            handleClickDownloadFileEncoded
+            handleClickDownloadFileEncoded,
+            handleClickEncodeText
         }}>
             {children}
-        </FileContext.Provider>
+        </EncoderContext.Provider>
     )
 }

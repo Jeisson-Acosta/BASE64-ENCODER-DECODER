@@ -1,9 +1,8 @@
 import { useRef, useEffect } from "react"
-import { useFileContext } from "./useFileContext.js"
-
+import { useEncoderContext } from "./useEncoderContext"
 
 export function useUploadFile() {
-    const { uploadedFile, setUploadedFile, handleFiles } = useFileContext()
+    const { uploadedFile, setUploadedFile, handleFiles } = useEncoderContext()
     const inputfileRef = useRef()
     const uploadfileContainerRef = useRef()
 

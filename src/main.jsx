@@ -3,13 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 
-import { FileProvider } from './context/file.jsx'
+import { EncoderProvider } from './context/encoder.jsx'
 import { TypeCodificationProvider } from './context/typeCondification.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <FileProvider>
-    <TypeCodificationProvider>
+  <TypeCodificationProvider>
+    <EncoderProvider>
       <App />
-    </TypeCodificationProvider>
-  </FileProvider>,
+    </EncoderProvider>,
+  </TypeCodificationProvider>
 )

@@ -2,29 +2,42 @@ import '../styles/components/PrincipalContainer.css'
 import { UploadFileIcon, TextIcon, FileIcon } from './Icons.jsx'
 import { useUploadFile } from '../hooks/useUploadFile.jsx'
 import { useTypeCodification } from '../hooks/useTypeCodification.js'
-import { useTextEncoder } from '../hooks/useTextEncoder.js'
+
+import { useEncoderContext } from '../hooks/useEncoderContext.js'
+import { useResetInfo } from '../hooks/useResetInfo.js'
+import { useState } from 'react'
 
 export function PrincipalContainer({ children }) {
 
+    const [textToEncoder, setTextToEncoder] = useState('')
     const { uploadedFile, inputfileRef, uploadfileContainerRef, handleClickBrowseFile, handleChangeUploadFile } = useUploadFile()
     const { typeOfCodification, handleClickChangeTypeOfCodification } = useTypeCodification()
-    const { setTextToEncoder, textEncoded, handleClickEncodeText } = useTextEncoder()
+    const { handleClickEncodeText, contentEncode } = useEncoderContext()
+    const { handleClickResetInfo } = useResetInfo()
 
-    console.log(textEncoded)
+    const handleClickButtonText = () => {
+        handleClickResetInfo()
+        handleClickChangeTypeOfCodification('text')
+    }
 
+    const handleClickButtonFile = () => {
+        handleClickResetInfo()
+        handleClickChangeTypeOfCodification('file')
+    }
+    
     return (
         <section className="principal-container">
             <div className="buttons_options">
                 <button 
                     className={'btn_option' + (typeOfCodification === 'text' ? ' active_option' : '')} 
-                    onClick={() => handleClickChangeTypeOfCodification('text')}
+                    onClick={handleClickButtonText}
                 >
                     <TextIcon />
                     TEXT
                 </button>
                 <button 
                     className={'btn_option' + (typeOfCodification === 'file' ? ' active_option' : '')}  
-                    onClick={() => handleClickChangeTypeOfCodification('file')}
+                    onClick={handleClickButtonFile}
                 >
                     <FileIcon />
                     FILE
@@ -46,7 +59,7 @@ export function PrincipalContainer({ children }) {
                         </button>
                     </div>
                 </section>
-            ) : typeOfCodification === 'text' && textEncoded === '' ? (
+            ) : typeOfCodification === 'text' && contentEncode === '' ? (
                 <section className="container-text-to-encoder">
                     <textarea
                         autoFocus
@@ -55,7 +68,7 @@ export function PrincipalContainer({ children }) {
                         onChange={e => setTextToEncoder(e.target.value)}
                     >
                     </textarea>
-                    <button onClick={handleClickEncodeText}>
+                    <button onClick={() => handleClickEncodeText(textToEncoder)}>
                         Encoder
                     </button>
                 </section>
