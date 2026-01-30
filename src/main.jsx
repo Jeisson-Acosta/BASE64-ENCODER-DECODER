@@ -10,6 +10,6 @@ createRoot(document.getElementById('root')).render(
   <TypeCodificationProvider>
     <EncoderProvider>
       <App />
-    </EncoderProvider>,
+    </EncoderProvider>
   </TypeCodificationProvider>
 )

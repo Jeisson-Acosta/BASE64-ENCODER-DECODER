@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Layout from './components/Layout.jsx'
-import { Header } from './components/Header.jsx'
 import { Encoder } from './pages/Encoder.jsx'
 import { Decoder } from './pages/Decoder.jsx'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
 
@@ -17,7 +17,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
-
+      <Toaster />
     </>
   )
 }

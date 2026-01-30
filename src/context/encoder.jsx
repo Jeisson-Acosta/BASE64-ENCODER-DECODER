@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { useTypeCodification } from "../hooks/useTypeCodification.js";
+import toast from "react-hot-toast";
 
 export const EncoderContext = createContext()
 
@@ -53,7 +54,7 @@ export function EncoderProvider({ children }) {
         // Crear un blob con el contenido
         const blob = new Blob([contentEncode], { type: 'text/plain;charset=utf-8' })
 
-        const nameFile = typeOfCodification === 'file' ? uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')) : 'output_base64.txt'
+        const nameFile = typeOfCodification === 'file' ? uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')) + '.txt' : 'output_base64.txt'
 
         // Crear un enlace temporal
         const anchor = document.createElement('a')
@@ -61,12 +62,17 @@ export function EncoderProvider({ children }) {
         anchor.download = nameFile
 
         anchor.click()
-
+        
         // Limpiar
         URL.revokeObjectURL(anchor.href)
+        
+        toast.success(`File downloaded: ${nameFile}`)
     }
 
-    const handleClickCopyContent = () => { navigator.clipboard.writeText(contentEncode) }
+    const handleClickCopyContent = () => { 
+        navigator.clipboard.writeText(contentEncode) 
+        toast.success('Copied!')
+    }
 
     return (
         <EncoderContext.Provider value={{
