@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { useTypeCodification } from "../hooks/useTypeCodification.js";
+import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export const EncoderContext = createContext()
@@ -8,11 +9,19 @@ export function EncoderProvider({ children }) {
     const [uploadedFile, setUploadedFile] = useState(null)
     // const [textoToEncoder, setTextToEncoder] = useState('')
     const [contentEncode, setContentEncode] = useState('')
+    const [contentDecode, setContentDecode] = useState('')
     const { typeOfCodification } = useTypeCodification()
 
     const handleClickEncodeText = (text) => {
         if (!text) return
         setContentEncode(btoa(text))
+        toast.success('Text encoded successfully')
+    }
+
+    const handleClickDecodeText = (text) => {
+        if (!text) return
+        setContentDecode(atob(text))
+        toast.success('Text decoded successfully!')
     }
 
     const handleFiles = (file) => {
@@ -23,6 +32,7 @@ export function EncoderProvider({ children }) {
             const base64String = e.target.result.split(',')[1];
             setContentEncode(base64String);
         };
+        // console.log(reader.readAsText(uploadedFile))
         reader.readAsDataURL(file);
     }
 
@@ -70,7 +80,7 @@ export function EncoderProvider({ children }) {
     }
 
     const handleClickCopyContent = () => { 
-        navigator.clipboard.writeText(contentEncode) 
+        navigator.clipboard.writeText(contentEncode === '' ? contentDecode : contentEncode)
         toast.success('Copied!')
     }
 
@@ -81,10 +91,12 @@ export function EncoderProvider({ children }) {
             handleFiles,
             setContentEncode,
             contentEncode,
+            contentDecode,
             handleClickCopyContent,
             handleClickDownloadFile,
             handleClickDownloadFileEncoded,
-            handleClickEncodeText
+            handleClickEncodeText,
+            handleClickDecodeText
         }}>
             {children}
         </EncoderContext.Provider>

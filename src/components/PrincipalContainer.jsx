@@ -6,14 +6,17 @@ import { useTypeCodification } from '../hooks/useTypeCodification.js'
 import { useEncoderContext } from '../hooks/useEncoderContext.js'
 import { useResetInfo } from '../hooks/useResetInfo.js'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export function PrincipalContainer({ children }) {
 
-    const [textToEncoder, setTextToEncoder] = useState('')
+    const [textToChange, setTextToChange] = useState('')
     const { uploadedFile, inputfileRef, uploadfileContainerRef, handleClickBrowseFile, handleChangeUploadFile } = useUploadFile()
     const { typeOfCodification, handleClickChangeTypeOfCodification } = useTypeCodification()
-    const { handleClickEncodeText, contentEncode } = useEncoderContext()
+    const { handleClickEncodeText, handleClickDecodeText, contentEncode, contentDecode } = useEncoderContext()
     const { handleClickResetInfo } = useResetInfo()
+
+    const locationPage = useLocation().pathname.split('/')[1]
 
     const handleClickButtonText = () => {
         handleClickResetInfo()
@@ -59,17 +62,21 @@ export function PrincipalContainer({ children }) {
                         </button>
                     </div>
                 </section>
-            ) : typeOfCodification === 'text' && contentEncode === '' ? (
+            ) : typeOfCodification === 'text' && (locationPage === '' && contentEncode === '') || (locationPage === 'decoder' && contentDecode === '') ? (
                 <section className="container-text-to-encoder">
                     <textarea
                         autoFocus
                         className='text-to-encoder'
-                        placeholder='Enter your text here to encoder'
-                        onChange={e => setTextToEncoder(e.target.value)}
+                        placeholder={`Enter your text here to ${locationPage === '' ? 'Encoder' : 'Decoder'}`}
+                        onChange={e => setTextToChange(e.target.value)}
                     >
                     </textarea>
-                    <button onClick={() => handleClickEncodeText(textToEncoder)}>
-                        Encoder
+                    <button onClick={() => {
+                        locationPage === ''
+                            ? handleClickEncodeText(textToChange)
+                            : handleClickDecodeText(textToChange)
+                    }}>
+                        {locationPage === '' ? 'Encoder' : 'Decoder'}
                     </button>
                 </section>
             )
