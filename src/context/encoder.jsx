@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 import { useTypeCodification } from "../hooks/useTypeCodification.js";
-import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export const EncoderContext = createContext()
@@ -24,30 +23,45 @@ export function EncoderProvider({ children }) {
         toast.success('Text decoded successfully!')
     }
 
-    const handleFiles = (file) => {
+    const handleFiles = (file, pathname) => {
         if (!file) return;
+        let base64String;
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const base64String = e.target.result.split(',')[1];
-            setContentEncode(base64String);
+            // base64String = e.target.result.split(',')[1];
+
+            // SI es 'Encoder' leemos el archivo.
+            if (pathname === '') { 
+                base64String = e.target.result.split(',')[1]
+                setContentEncode(base64String) 
+            }
+
+            // Si es 'Decider' leemos el contenido del archivo.
+            if (pathname === 'decoder') { 
+                base64String = e.target.result.trim()
+                setContentDecode(base64String)                 
+            }
         };
-        // console.log(reader.readAsText(uploadedFile))
-        reader.readAsDataURL(file);
+
+        if (pathname === ''){ reader.readAsDataURL(file) }
+        if (pathname === 'decoder') { reader.readAsText(file) }
     }
 
+    const handleClickDownloadFileDecoder = ({ nameFile, typeFile }) => {
 
-    const handleClickDownloadFile = ({ nameFile, typFile }) => {
+        console.log(typeFile)
+
         // Convertir base64 a bytes
-        const byteCharacters = atob(contentEncode)
-        const byteNumbers = new Array(byteCharacters.length)
+        const byteCharacters = atob(contentDecode)
+        const byteNumbers = new Uint8Array(byteCharacters.length)
 
         for (let i = 0; i < byteCharacters.length; i++) {
             byteNumbers[i] = byteCharacters.charCodeAt(i)
         }
 
         const byteArray = new Uint8Array(byteNumbers)
-        const blob = new Blob([byteArray], { type: typFile })
+        const blob = new Blob([byteArray], { type: typeFile })
 
         // Crear enlace temporal
         const url = URL.createObjectURL(blob)
@@ -58,6 +72,7 @@ export function EncoderProvider({ children }) {
 
         // Limpieza
         URL.revokeObjectURL(url)
+        toast.success(`File: ${nameFile} donwloaded successfully!`)
     }
 
     const handleClickDownloadFileEncoded = () => {
@@ -90,10 +105,11 @@ export function EncoderProvider({ children }) {
             setUploadedFile,
             handleFiles,
             setContentEncode,
+            setContentDecode,
             contentEncode,
             contentDecode,
             handleClickCopyContent,
-            handleClickDownloadFile,
+            handleClickDownloadFileDecoder,
             handleClickDownloadFileEncoded,
             handleClickEncodeText,
             handleClickDecodeText

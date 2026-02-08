@@ -1,12 +1,14 @@
 import { PrincipalContainer } from "../components/PrincipalContainer.jsx"
 import { useTypeCodification } from "../hooks/useTypeCodification.js"
 import { useEncoderContext } from "../hooks/useEncoderContext.js"
+import { useTypeMymeSelected } from "../hooks/useTypeMymeSelected.js"
 import { CircleRedIcon, CircleYellowIcon, CircleGreenIcon, CopyIcon, DownloadIcon } from "../components/Icons.jsx"
 
 export function Decoder() {
   
-  const { uploadedFile, handleClickCopyContent, handleClickDownloadFileEncoded, contentDecode } = useEncoderContext()
+  const { uploadedFile, handleClickCopyContent, handleClickDownloadFileDecoder, contentDecode } = useEncoderContext()
   const { typeOfCodification } = useTypeCodification()
+  const { typeMymeSelected } = useTypeMymeSelected()
 
   return (
     <PrincipalContainer>
@@ -33,7 +35,7 @@ export function Decoder() {
                 <CircleGreenIcon />
               </div>
               <div className="name-file-output">
-                {uploadedFile && uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')) + '.txt'}
+                {uploadedFile && uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')) + `.${typeMymeSelected.split('/')[1]}`}
                 {typeOfCodification === 'text' && 'output_base64.txt'}
               </div>
             </div>
@@ -42,7 +44,7 @@ export function Decoder() {
                 <CopyIcon />
                 COPY
               </button>
-              <button className="download-btn" onClick={handleClickDownloadFileEncoded}>
+              <button className="download-btn" onClick={() => handleClickDownloadFileDecoder({ nameFile: uploadedFile.name.split(' ').join('_').slice(0, uploadedFile.name.indexOf('.')), typeFile: typeMymeSelected })}>
                 <DownloadIcon />
                 DOWNLOAD
               </button>

@@ -37,6 +37,24 @@
 .buttons_options .active_option {
     background: #6655be;
 }
+.select-type-file {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border-radius: 18px;
+}
+
+.select-type-file select {
+    padding: 4px;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
 .container-text-to-encoder {
     width: 100%;
     display: flex;

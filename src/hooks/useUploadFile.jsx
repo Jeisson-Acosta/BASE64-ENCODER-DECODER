@@ -1,17 +1,20 @@
 import { useRef, useEffect } from "react"
 import { useEncoderContext } from "./useEncoderContext"
+import { useLocation } from "react-router-dom"
 
 export function useUploadFile() {
     const { uploadedFile, setUploadedFile, handleFiles } = useEncoderContext()
     const inputfileRef = useRef()
     const uploadfileContainerRef = useRef()
 
+    const locationPage = useLocation().pathname.split('/')[1]
+
     // Simulamos que dieron click en el input type file con el boton.
     const handleClickBrowseFile = () => { inputfileRef.current.click() }
 
     const handleChangeUploadFile = () => { 
         setUploadedFile(inputfileRef.current.files[0])
-        handleFiles(inputfileRef.current.files[0]) 
+        handleFiles(inputfileRef.current.files[0], locationPage) 
     }
 
     useEffect(() => {
@@ -33,7 +36,7 @@ export function useUploadFile() {
             e.preventDefault();
             container.classList.remove('dragover')
             setUploadedFile(e.dataTransfer.files[0])
-            handleFiles(e.dataTransfer.files[0]);
+            handleFiles(e.dataTransfer.files[0], locationPage);
         };
 
         // if (uploadedFile !== null) handleFiles(uploadedFile)
